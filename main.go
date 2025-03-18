@@ -111,4 +111,7 @@ func main() {
 		}
 	}
 
+	fmt.Println("\nPress any key to continue...")
+	fmt.Scanln()
+
 }
