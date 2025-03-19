@@ -54,13 +54,23 @@ func directwind(deg float64) string { //Get wind direction
 func main() {
 	//Welcome page and city input **********************************************************************
 	fmt.Println("GOWEATHER - ver 0.1.2")
-	apikey := "INSERT YOUR API KEY HERE"
-	fmt.Print("Input city to view forecast: ")
-
+	apikey := "72a8cad5f37d68dbf24ad918aca7ef41"
 	var city string
-	scanner := bufio.NewScanner(os.Stdin)
-	scanner.Scan()
-	city = scanner.Text()
+	if len(os.Args) == 1 {
+		fmt.Print("Input city to view forecast: ")
+		scanner := bufio.NewScanner(os.Stdin)
+		scanner.Scan()
+		city = scanner.Text()
+		for city == "" {
+			fmt.Print("Input city to view forecast: ")
+			scanner := bufio.NewScanner(os.Stdin)
+			scanner.Scan()
+			city = scanner.Text()
+		}
+	} else if len(os.Args) > 1 {
+		city = os.Args[1]
+	}
+
 	urlcity := url.QueryEscape(city)
 	//**************************************************************************************************
 
@@ -95,41 +105,37 @@ func main() {
 	}
 	//****************************************************
 
-	//Print Data *************************************************************************
-	fmt.Printf("Location: %s, %s\n", data.Name, data.Sys.Country)
-
+	var message string
+	message += "Location: " + data.Name + ", " + data.Sys.Country + "\n"
 	if len(data.Weatherdata) > 0 {
-		fmt.Printf("Weather: %s\n", data.Weatherdata[0].Description)
+		message += "Weather: " + data.Weatherdata[0].Description + "\n"
+	} else {
+		message += "Weather description unavailable!\n"
 	}
-
-	fmt.Printf("Temperature: %.0f°C\n", conv_K_C(data.Main.Temp))
-
-	fmt.Printf("Feels like: %.0f°C\n", conv_K_C(data.Main.FeelsLike))
-
-	fmt.Printf("Max temperature: %.0f°C\n", conv_K_C(data.Main.MaxTemp))
-
-	fmt.Printf("Min temperature: %.0f°C\n", conv_K_C(data.Main.MinTemp))
-
-	fmt.Printf("Pressure: %dhPa -> ", data.Main.Pressure)
+	message += "Temperature: " + fmt.Sprintf("%.0f", conv_K_C(data.Main.Temp)) + "°C\n"
+	message += "Feels like: " + fmt.Sprintf("%.0f", conv_K_C(data.Main.FeelsLike)) + "°C\n"
+	message += "Max temperature: " + fmt.Sprintf("%.0f", conv_K_C(data.Main.MaxTemp)) + "°C\n"
+	message += "Min temperature: " + fmt.Sprintf("%.0f", conv_K_C(data.Main.MinTemp)) + "°C\n"
+	message += "Pressure: " + fmt.Sprintf("%d", data.Main.Pressure) + "hPa -> "
 	switch {
 	case data.Main.Pressure < 980:
-		fmt.Printf("Low pressure -> Cloudy/Raining!")
+		message += "Low pressure -> Cloudy/Raining!"
 	case data.Main.Pressure > 1000:
-		fmt.Printf("High pressure -> Sunny!")
+		message += "High pressure -> Sunny!"
 	default:
-		fmt.Printf("Normal pressure")
+		message += "Normal pressure"
 	}
-	fmt.Printf("\n")
+	message += "\n"
+	message += "Humidity: " + fmt.Sprintf("%d", data.Main.Humidity) + "%\n"
+	message += "Wind: " + fmt.Sprintf("%.1f", data.Wind.Speed*3.6) + "km/h -> From: "
+	message += directwind(data.Wind.Deg) + "\n"
+	message += "Sunrise: " + time.Unix(int64(data.Sys.Sunrise), 0).Format("15:04") + " GMT+2\n"
+	message += "Sunset: " + time.Unix(int64(data.Sys.Sunset), 0).Format("15:04") + " GMT+2\n"
 
-	fmt.Printf("Humidity: %d%%\n", data.Main.Humidity)
+	//Print Data *************************************************************************
+	fmt.Println(message)
 
-	fmt.Printf("Wind: %.1fkm/h -> From: ", data.Wind.Speed*3.6)
-	fmt.Printf("%s\n", directwind(data.Wind.Deg))
-
-	fmt.Printf("Sunrise: %s GMT+2\n", time.Unix(int64(data.Sys.Sunrise), 0).Format("15:04"))
-	fmt.Printf("Sunset: %s GMT+2\n", time.Unix(int64(data.Sys.Sunset), 0).Format("15:04"))
-
-	fmt.Println("\nPress any key to continue...")
+	fmt.Println("Press any key to continue...")
 	fmt.Scanln()
 
 }
