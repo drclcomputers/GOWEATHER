@@ -1,6 +1,0 @@
-Location: Fălticeni, RO
-Date: 2025-03-20, Temp: 11°C, Weather: clear sky
-Date: 2025-03-21, Temp: 14°C, Weather: clear sky
-Date: 2025-03-22, Temp: 13°C, Weather: scattered clouds
-Date: 2025-03-23, Temp: 12°C, Weather: broken clouds
-Date: 2025-03-24, Temp: 19°C, Weather: overcast clouds
