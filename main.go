@@ -54,7 +54,7 @@ func directwind(deg float64) string { //Get wind direction
 func main() {
 	//Welcome page and city input **********************************************************************
 	fmt.Println("GOWEATHER - ver 0.1.2")
-	apikey := "72a8cad5f37d68dbf24ad918aca7ef41"
+	apikey := "INSERT WEATHER API KEY HERE"
 	var city string
 	if len(os.Args) == 1 {
 		fmt.Print("Input city to view forecast: ")
