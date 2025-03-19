@@ -1,6 +1,6 @@
 # GOWEATHER
 
-GOWEATHER is a cli-based weather app. It was written in GO and it uses the OPENWEATHERMAP API, so providing you wish to try it, you'll have to acquire a key yourself.
+GOWEATHER is a cli-based weather app. It was written in GO and it uses the OPENWEATHERMAP API, so providing you wish to try it, you'll have to acquire a key yourself.<br>
 Note: The API key should be pasted into the "config.txt" file.<br>
 <br><br>
 Usage:<br>
