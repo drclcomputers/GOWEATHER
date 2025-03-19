@@ -76,7 +76,7 @@ func directwind(deg float64) string { //Get wind direction
 
 func main() {
 
-	fmt.Println("GOWEATHER - ver 0.1.5")
+	fmt.Println("GOWEATHER - ver 0.2.1")
 	apikey, err := os.ReadFile("config.txt")
 	if err != nil {
 		fmt.Println("Can't read API Key! 'config.txt' does not exist!")
