@@ -65,6 +65,11 @@ func main() {
 	//**************************************************************************************************
 
 	//Fetching data from API ***************************************************************************
+	if apikey == "INSERT YOUR API KEY HERE" {
+		fmt.Println("Go to https://home.openweathermap.org/, create an account and get an API key. Afterwards, insert it here, into the apikey variable.")
+		return
+	}
+
 	fullurl := fmt.Sprintf("http://api.openweathermap.org/data/2.5/weather?&appid=%s&q=%s", apikey, urlcity)
 
 	resp, err := http.Get(fullurl)
