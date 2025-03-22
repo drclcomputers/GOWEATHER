@@ -155,7 +155,7 @@ func current(city string) string {
 		fmt.Println("City not found!")
 		os.Exit(2)
 	} else if data.Cod != 200 {
-		fmt.Printf("Error code: %d", data.Cod)
+		fmt.Printf("Error code: %d\n", data.Cod)
 		os.Exit(2)
 	}
 
@@ -228,7 +228,7 @@ func show_forecast(city string) string {
 		fmt.Println("City not found!")
 		os.Exit(2)
 	} else if data.Cod != "200" {
-		fmt.Printf("Error code: %s", data.Cod)
+		fmt.Printf("Error code: %s\n", data.Cod)
 		os.Exit(2)
 	}
 
