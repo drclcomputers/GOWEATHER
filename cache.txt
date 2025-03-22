@@ -1,0 +1,14 @@
+2025-03-22 19:46:12.3072215 +0200 EET m=+0.147685701
+
+Location: Suceava, RO
+Weather: clear sky
+Temperature: 10.3°C
+Feels like: 8.5°C
+Max temperature: 10.3°C
+Min temperature: 10.3°C
+Pressure: 1018hPa -> High pressure -> Sunny!
+Humidity: 43%
+Wind: 18.5km/h -> From: SE
+Visibility: 10 km
+Sunrise: 06:13 GMT+2
+Sunset: 18:29 GMT+2
