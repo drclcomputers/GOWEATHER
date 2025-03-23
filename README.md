@@ -1,11 +1,40 @@
-# GOWEATHER
+### 🌤️ **GoWeather** – Your Simple & Accurate Weather Companion  
 
-GOWEATHER is a cli-based weather app. It was written in GO and it uses the OPENWEATHERMAP API, so providing you wish to try it, you'll have to acquire a key yourself.<br>
-Note: The API key should be pasted into the "config.txt" file.<br>
-<br>
-Usage:<br>
-At the beginning, you will prompted to type a city you wish to find its forecast. After that, different values, for example temperature or wind will be printed.
-<br>
-Use "-i" to switch to the Imperial System <br>
-Use "-f" to get the forecast for the next 5 days:<br>
-Use "-c "city name"" to directly access info about the city
+GoWeather is a sleek and intuitive weather website that provides real-time weather updates, forecasts, and key climate insights for any location worldwide.  
+
+---
+
+## 🚀 **Features**  
+✅ **Instant Weather Search** – Get real-time weather data by entering any city name.  
+✅ **Detailed Weather Info** – Temperature, humidity, wind speed, visibility, and more.  
+✅ **5-Day Forecast** – Stay ahead with future weather predictions.  
+✅ **Mobile-Friendly Design** – Fully responsive for a seamless experience on any device.  
+✅ **Fast & Lightweight** – Minimalistic UI with quick data fetching.  
+
+---
+
+## 🛠️ **Technologies Used**  
+- **Frontend:** HTML, CSS, JavaScript  
+- **API:** OpenWeatherMap
+
+---
+
+## 📦 **Installation & Usage**  
+1️⃣ Clone the repository:  
+   ```bash
+   git clone https://github.com/drclcomputers/GOWEATHER
+   ```  
+2️⃣ Navigate to the project folder:  
+   ```bash
+   cd GoWeather
+   ```  
+3️⃣ Deploy it online.  
+
+---
+
+## 📜 **License**  
+This project is licensed under the **MIT License**.  
+
+---
+
+Let me know if you want any custom changes! 🚀
