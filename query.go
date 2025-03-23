@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"os"
 	"time"
 )
 
@@ -60,13 +61,13 @@ type Location struct {
 
 const (
 	CelsiusToKelvin = 273.15
-	ApiKey          = "72a8cad5f37d68dbf24ad918aca7ef41"
 	RealtimeURL     = "http://api.openweathermap.org/data/2.5/weather?&appid=%s&q=%s"
 	ForecastURL     = "https://api.openweathermap.org/data/2.5/forecast?q=%s&appid=%s"
 	idapiURL        = "http://ip-api.com/json/"
 )
 
 var use_metric = true
+var ApiKey = os.Getenv("ApiKey")
 
 func getIpLocation() string {
 	resp, err := http.Get(idapiURL)

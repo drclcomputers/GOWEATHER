@@ -129,9 +129,8 @@ func homepage(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	fs := http.FileServer(http.Dir("."))
-	http.Handle("/style.css", fs)
-	http.Handle("/script.js", fs)
+	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
+
 	http.HandleFunc("/", homepage)
 	http.HandleFunc("/query", queryCity)
 
