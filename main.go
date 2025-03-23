@@ -35,7 +35,7 @@ func forecastExtract(message string, i int) (string, string, string) {
 func emojiCond(cond string) string {
 	switch {
 	case cond == "Clear":
-		cond = "☀️"
+		cond = "⛅"
 	case cond == "Clouds":
 		cond = "☁️"
 	case cond == "Rain":
