@@ -129,6 +129,7 @@ func homepage(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	http.FileServer(http.Dir("."))
 	http.HandleFunc("/", homepage)
 	http.HandleFunc("/query", queryCity)
 
