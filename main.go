@@ -93,7 +93,7 @@ func createhtml(message string) string {
 	cond3 = emojiCond(cond3)
 	cond4 = emojiCond(cond4)
 
-	basehtml, err := os.ReadFile("test.html")
+	basehtml, err := os.ReadFile("index.html")
 	if err != nil {
 		return "Error 404!"
 	}
