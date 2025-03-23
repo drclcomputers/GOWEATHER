@@ -121,7 +121,7 @@ func queryCity(w http.ResponseWriter, r *http.Request) {
 }
 
 func homepage(w http.ResponseWriter, r *http.Request) {
-	basehtml, err := os.ReadFile("base.html")
+	basehtml, err := os.ReadFile("index.html")
 	if err != nil {
 		fmt.Fprintf(w, "%s", "Error 404!")
 	}
