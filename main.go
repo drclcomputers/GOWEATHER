@@ -1,277 +1,136 @@
 package main
 
 import (
-	"bufio"
-	"encoding/json"
-	"flag"
 	"fmt"
-	"io"
-	"log"
 	"net/http"
-	"net/url"
 	"os"
+	"regexp"
 	"strings"
 	"time"
 )
 
-type Weather struct {
-	Name string `json:"name"`
-	Sys  struct {
-		Country string  `json:"country"`
-		Sunrise float64 `json:"sunrise"`
-		Sunset  float64 `json:"sunset"`
-	} `json:"sys"`
-	Main struct {
-		Temp      float64 `json:"temp"`
-		FeelsLike float64 `json:"feels_like"`
-		MaxTemp   float64 `json:"temp_max"`
-		MinTemp   float64 `json:"temp_min"`
-		Pressure  int     `json:"pressure"`
-		Humidity  int     `json:"humidity"`
-	} `json:"main"`
-	Weatherdata []struct {
-		Description string `json:"description"`
-	} `json:"weather"`
-	Wind struct {
-		Speed float64 `json:"speed"`
-		Deg   float64 `json:"deg"`
-	} `json:"wind"`
-	Cod        int `json:"cod"`
-	Visibility int `json:"visibility"`
+func extractValue(text, pattern string) string {
+	re := regexp.MustCompile(pattern)
+	match := re.FindStringSubmatch(text)
+	if len(match) > 1 {
+		return strings.TrimSpace(match[1])
+	}
+	return "N/A"
 }
 
-type WeatherForecast struct {
-	Cod  string `json:"cod"`
-	List []struct {
-		Dt   int64 `json:"dt"`
-		Main struct {
-			Temp float64 `json:"temp"`
-		} `json:"main"`
-		Weather []struct {
-			Description string `json:"description"`
-		} `json:"weather"`
-	} `json:"list"`
-	City struct {
-		Name    string `json:"name"`
-		Country string `json:"country"`
+func forecastExtract(message string, i int) (string, string, string) {
+	pattern := `Date:\s(\d{4}-\d{2}-\d{2}),\sTemp:\s([\d.]+)°C,\sWeather:\s([a-zA-Z]+)`
+
+	re := regexp.MustCompile(pattern)
+
+	matches := re.FindAllStringSubmatch(message, -1)
+
+	if i < 0 || i >= len(matches) {
+		return "N/A", "N/A", "N/A"
 	}
+
+	return matches[i][1], matches[i][2], matches[i][3]
 }
 
-const (
-	C0                   = 273.15 //0°C = 273K
-	apifile       string = "config.txt"
-	cache_file    string = "cache.txt"
-	realtime_link string = "http://api.openweathermap.org/data/2.5/weather?&appid=%s&q=%s"
-	forecast_link string = "https://api.openweathermap.org/data/2.5/forecast?q=%s&appid=%s"
-)
-
-var (
-	metric       bool
-	showforecast bool
-	cityinp      string
-	api          string
-)
-
-// convert K to C or to F
-func conv_K(degrees float64) string {
-	if metric {
-		return fmt.Sprintf("%.1f°C", degrees-C0)
-	}
-	return fmt.Sprintf("%.1f°F", (degrees-C0)*1.8+32)
-}
-
-// Get wind direction
-func directwind(deg float64) string {
-	directions := []string{"N", "NE", "E", "SE", "S", "SW", "W", "NW"}
-	index := int((deg+22.5)/45.0) % 8
-	return directions[index]
-}
-
-func pause() {
-	fmt.Println("Press any key to continue...")
-	fmt.Scanln()
-}
-
-// get api
-func api_key_check() string {
-	apikey, err := os.ReadFile(apifile)
-	apikeystr := strings.TrimSpace(string(apikey))
-	if err != nil {
-		log.Fatalf("Error reading API key: %v", err)
-		os.Exit(2)
-	}
-	if strings.Contains(apikeystr, "INSERT") || apikeystr == "" {
-		fmt.Println("Unable to find API Key. Go to https://home.openweathermap.org/, create an account and get an API key. Afterwards, paste it into 'config.txt'.")
-		os.Exit(2)
-	}
-	return apikeystr
-}
-
-// input city
-func read_city() string {
-	fmt.Print("Input city to view forecast: ")
-	scanner := bufio.NewScanner(os.Stdin)
-	scanner.Scan()
-	return scanner.Text()
-}
-
-// parameters
-func parameters() {
-	flag.BoolVar(&metric, "i", false, "Use imperial units")
-	flag.BoolVar(&showforecast, "f", false, "Show forecast instead of current weather")
-	flag.StringVar(&cityinp, "c", "", "The name of the city (exp: -c \"los angeles\")")
-	flag.Parse()
-	metric = !metric
-}
-
-// current weather
-func current(city string) string {
-	var message string
-
-	fullurl := fmt.Sprintf(realtime_link, api, city)
-
-	resp, err := http.Get(fullurl)
-	if err != nil {
-		fmt.Println("Error fetching data! Can't connect to network or the city doesn't exist!")
-		os.Exit(2)
-	}
-	defer resp.Body.Close()
-
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		fmt.Println("Error fetching data!")
-		os.Exit(2)
-	}
-
-	var data Weather
-
-	if err := json.Unmarshal(body, &data); err != nil {
-		fmt.Println("Error parsing JSON response.")
-		fmt.Println("Response body:", string(body))
-		os.Exit(2)
-	}
-
-	if data.Cod == 404 {
-		fmt.Println("City not found!")
-		os.Exit(2)
-	} else if data.Cod != 200 {
-		fmt.Printf("Error code: %d\n", data.Cod)
-		os.Exit(2)
-	}
-
-	message += "Location: " + data.Name + ", " + data.Sys.Country + "\n"
-	if len(data.Weatherdata) > 0 {
-		message += "Weather: " + data.Weatherdata[0].Description + "\n"
-	} else {
-		message += "Weather description unavailable!\n"
-	}
-
-	message += "Temperature: " + conv_K(data.Main.Temp) + "\n"
-	message += "Feels like: " + conv_K(data.Main.FeelsLike) + "\n"
-
-	message += "Max temperature: " + conv_K(data.Main.MaxTemp) + "\n"
-	message += "Min temperature: " + conv_K(data.Main.MinTemp) + "\n"
-
-	message += "Pressure: " + fmt.Sprintf("%d", data.Main.Pressure) + "hPa -> "
+func emojiCond(cond string) string {
 	switch {
-	case data.Main.Pressure < 980:
-		message += "Low pressure -> Cloudy/Raining!"
-	case data.Main.Pressure > 1000:
-		message += "High pressure -> Sunny!"
-	default:
-		message += "Normal pressure"
+	case cond == "Clear":
+		cond = "☀️"
+	case cond == "Clouds":
+		cond = "☁️"
+	case cond == "Rain":
+		cond = "🌧️"
+	case cond == "Drizzle":
+		cond = "☔"
+	case cond == "Thunderstorm":
+		cond = "⛈️"
+	case cond == "Snow":
+		cond = "🌧️"
+	case cond == "Mist" || cond == "Fog" || cond == "Smoke" || cond == "Haze":
+		cond = "🌫️"
+	case cond == "Tornado":
+		cond = "🌪️"
+	case cond == "Squall":
+		cond = "💨"
+	case cond == "Ash":
+		cond = "🌋"
 	}
-	message += "\n"
-	message += "Humidity: " + fmt.Sprintf("%d", data.Main.Humidity) + "%\n"
-	if metric {
-		message += "Wind: " + fmt.Sprintf("%.1f", data.Wind.Speed*3.6) + "km/h -> From: "
-	} else {
-		message += "Wind: " + fmt.Sprintf("%.1f", data.Wind.Speed*2.23694) + "mph -> From: "
-	}
-	message += directwind(data.Wind.Deg) + "\n"
-	if metric {
-		message += fmt.Sprintf("Visibility: %d km\n", data.Visibility/1000)
-	} else {
-		message += fmt.Sprintf("Visibility: %.1f miles\n", float64(data.Visibility)*0.0006213712)
-	}
-	message += "Sunrise: " + time.Unix(int64(data.Sys.Sunrise), 0).Format("15:04") + " GMT+2\n"
-	message += "Sunset: " + time.Unix(int64(data.Sys.Sunset), 0).Format("15:04") + " GMT+2\n"
-	return message
+	return cond
 }
 
-// forecast
-func show_forecast(city string) string {
-	fullurl := fmt.Sprintf(forecast_link, city, api)
-	resp, err := http.Get(fullurl)
+func dayofweek(data string) string {
+	parsdat1, err := time.Parse("2006-01-02", data)
+	parsdat1 = parsdat1.AddDate(0, 0, -1)
 	if err != nil {
-		fmt.Println("Error fetching data! Can't connect to network or the city doesn't exist!")
-		os.Exit(2)
-	}
-	defer resp.Body.Close()
-
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		fmt.Println("Error fetching data!")
-		os.Exit(2)
+		fmt.Println("Error parsing date:", err)
+		return "N/A"
 	}
 
-	var message string
-	var data WeatherForecast
-
-	if err := json.Unmarshal(body, &data); err != nil {
-		fmt.Println("Error parsing JSON response.")
-		fmt.Println("Response body:", string(body))
-		os.Exit(2)
-	}
-
-	if data.Cod == "404" {
-		fmt.Println("City not found!")
-		os.Exit(2)
-	} else if data.Cod != "200" {
-		fmt.Printf("Error code: %s\n", data.Cod)
-		os.Exit(2)
-	}
-
-	message += "Location: " + data.City.Name + ", " + data.City.Country + "\n"
-	for _, forecast := range data.List {
-		t := time.Unix(forecast.Dt, 0).UTC()
-		if t.Hour() == 12 { // Check if the time is 12:00 PM
-			message += fmt.Sprintf("Date: %s, Temp: %s, Weather: %s\n", t.Format("2006-01-02"), conv_K(forecast.Main.Temp), forecast.Weather[0].Description)
-		}
-	}
-	return message
+	return parsdat1.Weekday().String()
 }
 
-// cache file
-func cache(message string) {
-	currentTime := time.Now().String()
-	if err := os.WriteFile(cache_file, []byte(currentTime+"\n\n"+message), 0644); err != nil {
-		log.Printf("Failed to write cache file: %v", err)
+func createhtml(message string) string {
+	loc := extractValue(message, `Location: (.+)`)
+	cond := extractValue(message, `Weather: (.+)`)
+	temp := extractValue(message, `Temperature: ([\d.]+)°C`)
+	feel := extractValue(message, `Feels like: ([\d.]+)°C`)
+	maxt := extractValue(message, `Max temperature: ([\d.]+)°C`)
+	mint := extractValue(message, `Min temperature: ([\d.]+)°C`)
+	pres := extractValue(message, `Pressure: ([\d.]+) hPa`)
+	hum := extractValue(message, `Humidity: ([\d.]+)%`)
+	wind := extractValue(message, `Wind: ([\d.]+) km/h`)
+	direc := extractValue(message, `From: (\w+)`)
+	vis := extractValue(message, `Visibility: ([\d.]+) km`)
+
+	dat1, temp1, cond1 := forecastExtract(message, 1)
+	dat2, temp2, cond2 := forecastExtract(message, 2)
+	dat3, temp3, cond3 := forecastExtract(message, 3)
+	dat4, temp4, cond4 := forecastExtract(message, 4)
+
+	cond = emojiCond(cond)
+	cond1 = emojiCond(cond1)
+	cond2 = emojiCond(cond2)
+	cond3 = emojiCond(cond3)
+	cond4 = emojiCond(cond4)
+
+	basehtml, err := os.ReadFile("test.html")
+	if err != nil {
+		return "Error 404!"
 	}
+
+	dat1 = "Tomorrow"
+	dat2 = dayofweek(dat2)
+	dat3 = dayofweek(dat3)
+	dat4 = dayofweek(dat4)
+
+	return fmt.Sprintf(string(basehtml),
+		loc, cond, temp, feel, mint, maxt, pres, hum, wind, direc, vis,
+		cond1, temp1, dat1,
+		cond2, temp2, dat2,
+		cond3, temp3, dat3,
+		cond4, temp4, dat4)
+}
+
+func queryCity(w http.ResponseWriter, r *http.Request) {
+	querytext := r.URL.Query().Get("city")
+	if querytext == "" {
+		fmt.Fprintf(w, "%s", createhtml(querycity(getIpLocation())))
+		return
+	}
+	fmt.Fprintf(w, "%s", createhtml(querycity(strings.TrimRight(querytext, " .,/\\()*&^%$#@!?<>"))))
+}
+
+func homepage(w http.ResponseWriter, r *http.Request) {
+	basehtml, err := os.ReadFile("test.html")
+	if err != nil {
+		fmt.Fprintf(w, "%s", "Error 404!")
+	}
+	fmt.Fprintf(w, "%s", basehtml)
 }
 
 func main() {
-	fmt.Println("GOWEATHER - ver 0.3.0")
-	api = api_key_check()
-	parameters()
+	http.HandleFunc("/", homepage)
+	http.HandleFunc("/query", queryCity)
 
-	for cityinp == "" {
-		cityinp = read_city()
-	}
-
-	urlcity := url.QueryEscape(cityinp)
-
-	var message string
-
-	if !showforecast {
-		message = current(urlcity)
-	} else {
-		message = show_forecast(urlcity)
-	}
-
-	fmt.Println(message)
-	cache(message)
-
-	pause()
-
+	http.ListenAndServe(":8090", nil)
 }
