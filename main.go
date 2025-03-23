@@ -130,7 +130,8 @@ func homepage(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	fs := http.FileServer(http.Dir("."))
-	http.Handle("/", fs)
+	http.Handle("/style.css", fs)
+	http.Handle("/script.js", fs)
 	http.HandleFunc("/", homepage)
 	http.HandleFunc("/query", queryCity)
 
