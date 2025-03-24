@@ -1,4 +1,4 @@
-### 🌤️ **GoWeather** – Your Simple & Accurate Weather Companion  
+# 🌤️ **GoWeather** – Your Simple & Accurate Weather Companion  
 
 GoWeather is a sleek and intuitive weather website that provides real-time weather updates, forecasts, and key climate insights for any location worldwide.  
 
