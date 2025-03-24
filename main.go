@@ -95,7 +95,7 @@ func createhtml(message string) string {
 
 	basehtml, err := os.ReadFile("index.html")
 	if err != nil {
-		return "Error 404!"
+		return "Error 404! Can't read file!"
 	}
 
 	dat1 = "Tomorrow"
@@ -123,7 +123,7 @@ func queryCity(w http.ResponseWriter, r *http.Request) {
 func homepage(w http.ResponseWriter, r *http.Request) {
 	basehtml, err := os.ReadFile("index.html")
 	if err != nil {
-		fmt.Fprintf(w, "%s", "Error 404!")
+		fmt.Fprintf(w, "%s", "Error 404! Can't read index.html!")
 	}
 	fmt.Fprintf(w, "%s", basehtml)
 }

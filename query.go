@@ -6,7 +6,6 @@ import (
 	"io"
 	"net/http"
 	"net/url"
-	"os"
 	"time"
 )
 
@@ -67,7 +66,7 @@ const (
 )
 
 var use_metric = true
-var ApiKey = os.Getenv("ApiKey")
+var ApiKey = "72a8cad5f37d68dbf24ad918aca7ef41"
 
 func getIpLocation() string {
 	resp, err := http.Get(idapiURL)

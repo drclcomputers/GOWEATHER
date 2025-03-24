@@ -1,0 +1,81 @@
+{
+  "name": "goweather",
+  "version": "0.3.0",
+  "description": "GoWeather is a sleek and intuitive weather website that provides real-time weather updates, forecasts, and key climate insights for any location worldwide.",
+  "main": "start.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "pack": "electron-builder --dir",
+    "start": "electron .",
+    "dist": "electron-builder"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/drclcomputers/GOWEATHER.git"
+  },
+  "keywords": [],
+  "author": "drclcomputers",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/drclcomputers/GOWEATHER/issues"
+  },
+  "homepage": "https://github.com/drclcomputers/GOWEATHER#readme",
+  "devDependencies": {
+    "electron": "^35.0.3",
+    "electron-builder": "^25.1.8"
+  },
+  "build": {
+    "appId": "com.goweather.app",
+    "productName": "GoWeather",
+    "files": [
+      "**/*",
+      "!**/node_modules/**/*.bin",
+      "main.js",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "server.exe",
+        "to": "../resources/server.exe",
+        "filter": ["win32"]
+      }, 
+      {
+        "from": "go_server",
+        "to": "../resources/go_server",
+        "filter": ["linux"]
+      }, 
+      {
+        "from": "index.html",
+        "to": "../index.html"
+      },
+      {
+        "from": "static/script.js",
+        "to": "../static/script.js"
+      },
+      {
+        "from": "static/style.css",
+        "to": "../static/style.css"
+      },
+      {
+        "from": "static/favicon.ico",
+        "to": "../static/favicon.ico"
+      }
+    ],
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "icon": "static/icon.ico",
+      "target": "nsis"
+    },
+    "mac": {
+      "icon": "static/icon.icns",
+      "target": "dmg"
+    },
+    "linux": {
+      "icon": "static/icon.png",
+      "target": "AppImage"
+    }
+  },
+  "dependencies": {}
+}
