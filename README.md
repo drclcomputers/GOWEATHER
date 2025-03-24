@@ -20,6 +20,8 @@ GoWeather is a sleek and intuitive weather website that provides real-time weath
 ---
 
 ## 📦 **Installation & Usage**  
+**⭐ Run the WebServer and access it via the Web Browser**
+
 1️⃣ Clone the repository:  
    ```bash
    git clone https://github.com/drclcomputers/GOWEATHER
@@ -27,8 +29,35 @@ GoWeather is a sleek and intuitive weather website that provides real-time weath
 2️⃣ Navigate to the project folder:  
    ```bash
    cd GoWeather
+   ```
+3️⃣ Build the Server executable
+   ```bash
+   go build
+   ```
+4️⃣ Run the server executable and navigate to **"localhost:8090"** in your Browser.
+
+**⭐ Run it as a Desktop WebApp**
+
+1️⃣ Clone the repository:  
+   ```bash
+   git clone https://github.com/drclcomputers/GOWEATHER
    ```  
-3️⃣ Deploy it online.  
+2️⃣ Navigate to the project folder:  
+   ```bash
+   cd GoWeather
+   ```
+3️⃣ Install the dependencies with npm:
+   ```bash
+   npm install
+   ```
+4️⃣ Test the App:
+   ```bash
+   npm start
+   ```
+5️⃣ Build an executable:
+   ```bash
+   npm build
+   ```
 
 ---
 
