@@ -21,7 +21,7 @@ GoWeather is a sleek and intuitive weather website that provides real-time weath
 
 ## 📋 **Requirements**
 ☑️ **NodeJS >= 18.17.1**<br>
-☑️ **GO (golang) >= 1.23**<br>
+☑️ **GO (golang) >= 1.22**<br>
 ☑️ **Electron >= 35.0.3**
 
 ## 📦 **Installation & Usage**  
