@@ -2,7 +2,7 @@
   "name": "goweather",
   "version": "0.3.0",
   "description": "GoWeather is a sleek and intuitive weather website that provides real-time weather updates, forecasts, and key climate insights for any location worldwide.",
-  "main": "start.js",
+  "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "pack": "electron-builder --dir",
