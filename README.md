@@ -56,7 +56,7 @@ GoWeather is a sleek and intuitive weather website that provides real-time weath
    ```
 5️⃣ Build an executable:
    ```bash
-   npm pack
+   npm run dist
    ```
 
 ---
