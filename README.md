@@ -60,7 +60,7 @@ GoWeather is a sleek and intuitive weather website that provides real-time weath
    ```bash
    go build -o server
    ```
-   ‼️ Note: For Windows, write server.exe. Otherwise leave it as is.
+   ‼️ Note: For Windows, write **"server.exe"**. Otherwise leave it as is.
    
 6️⃣ Build an executable:
    ```bash
