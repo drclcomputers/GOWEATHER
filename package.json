@@ -41,7 +41,7 @@
       }, 
       {
         "from": "go_server",
-        "to": "../resources/go_server",
+        "to": "../resources/server",
         "filter": ["linux"]
       }, 
       {

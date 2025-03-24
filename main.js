@@ -34,13 +34,24 @@ function startGoServer() {
   let goServerPath;
   const appPath = app.getAppPath(); // Get the path to the app's root directory
 
-  if (process.platform === 'win32') {
-    goServerPath = path.join(appPath, 'server.exe'); // Use Windows executable
-  } else if (process.platform === 'linux' || process.platform === 'darwin') {
-    goServerPath = path.join(appPath, 'server'); // Use Linux/macOS executable
-  } else {
-    console.error('Unsupported platform:', process.platform);
-    return;
+  if (app.isPackaged) { //packed
+    if (process.platform === 'win32') { 
+      goServerPath = path.join(appPath, '../server.exe'); // Use Windows executable
+    } else if (process.platform === 'linux' || process.platform === 'darwin') {
+      goServerPath = path.join(appPath, '../server'); // Use Linux/macOS executable
+    } else {
+      console.error('Unsupported platform:', process.platform);
+      return;
+    }
+  } else { 
+    if (process.platform === 'win32') {
+      goServerPath = path.join(appPath, 'server.exe'); // Use Windows executable
+    } else if (process.platform === 'linux' || process.platform === 'darwin') {
+      goServerPath = path.join(appPath, 'server'); // Use Linux/macOS executable
+    } else {
+      console.error('Unsupported platform:', process.platform);
+      return;
+    }
   }
 
   console.log('Starting Go server from:', goServerPath);
