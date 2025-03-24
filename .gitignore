@@ -1,3 +1,5 @@
 node_modules/
 Vault/
 dist/
+server.exe
+server
