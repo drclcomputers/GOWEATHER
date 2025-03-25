@@ -49,7 +49,7 @@ GoWeather is a sleek and intuitive weather website that provides real-time weath
    ```  
 2️⃣ Navigate to the project folder:  
    ```bash
-   cd GoWeather
+   cd GOWEATHER
    ```
 3️⃣ Install the dependencies with npm:
    ```bash
