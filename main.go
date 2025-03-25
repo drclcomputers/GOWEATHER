@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"path/filepath"
 	"regexp"
 	"strings"
 	"time"
@@ -126,8 +127,20 @@ func homepage(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "%s", basehtml)
 }
 
+func getExecutableDir() string {
+	exePath, err := os.Executable()
+	if err != nil {
+		fmt.Println("Error getting executable path:", err)
+		return "."
+	}
+	return filepath.Dir(exePath)
+}
+
 func main() {
-	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
+	exeDir := getExecutableDir()
+	staticPath := filepath.Join(exeDir, "static")
+
+	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir(staticPath))))
 
 	http.HandleFunc("/", homepage)
 	http.HandleFunc("/query", queryCity)
