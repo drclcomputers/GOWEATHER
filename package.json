@@ -40,7 +40,7 @@
         "filter": ["win32"]
       }, 
       {
-        "from": "go_server",
+        "from": "server",
         "to": "../resources/server",
         "filter": ["linux"]
       }, 
