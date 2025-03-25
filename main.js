@@ -36,9 +36,9 @@ function startGoServer() {
 
   if (app.isPackaged) { //packed
     if (process.platform === 'win32') { 
-      goServerPath = path.join(appPath, '../server.exe'); // Use Windows executable
+      goServerPath = path.join(appPath, '../../server.exe'); // Use Windows executable
     } else if (process.platform === 'linux' || process.platform === 'darwin') {
-      goServerPath = path.join(appPath, '../server'); // Use Linux/macOS executable
+      goServerPath = path.join(appPath, '../../server'); // Use Linux/macOS executable
     } else {
       console.error('Unsupported platform:', process.platform);
       return;
