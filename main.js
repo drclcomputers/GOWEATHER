@@ -77,24 +77,7 @@ function startGoServer() {
 }
 
 if (process.platform === 'linux') {
-  const fs = require('fs');
-  const electronPath = path.join(__dirname, 'node_modules', 'electron', 'dist', 'chrome-sandbox');
-  try {
-    fs.chmodSync(electronPath, 0o4755); // Set correct permissions (rwsr-xr-x)
-    console.log('✅ Fixed chrome-sandbox permissions.');
-  } catch (err) {
-    console.error('❌ Failed to set chrome-sandbox permissions:', err);
-  }
-  if (process.env.APPIMAGE) {
-    const electronPath = path.join(path.dirname(process.env.APPIMAGE), 'chrome-sandbox');
-    try {
-      fs.chmodSync(electronPath, 0o4755);
-      console.log('✅ Fixed chrome-sandbox permissions (AppImage).');
-    } catch (err) {
-      console.error('❌ Failed to fix chrome-sandbox permissions:', err);
-    }
-  }
-  
+  app.commandLine.appendSwitch('no-sandbox');
 }
 
 app.whenReady().then(() => {
