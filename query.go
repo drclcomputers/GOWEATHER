@@ -37,7 +37,8 @@ type Weather struct {
 }
 
 type WeatherForecast struct {
-	Cod  string `json:"cod"`
+	Cod string `json:"cod"`
+
 	List []struct {
 		Dt   int64 `json:"dt"`
 		Main struct {
@@ -49,8 +50,9 @@ type WeatherForecast struct {
 		} `json:"weather"`
 	} `json:"list"`
 	City struct {
-		Name    string `json:"name"`
-		Country string `json:"country"`
+		Name     string `json:"name"`
+		Country  string `json:"country"`
+		Timezone int    `json:"timezone"`
 	}
 }
 
@@ -200,13 +202,44 @@ func getWeatherForecast(city string) (string, error) {
 	}
 
 	message := "5 day forecast:\n"
+	//var message string
+	//todayMidnight := time.Now().UTC().Truncate(24 * time.Hour)
+	todayMidnight := time.Now().UTC().Truncate(24 * time.Hour)
 
+	var dayMaxTemps []float64
+	var dayWeather []string
+	var dayDates []string
+
+	daysPrinted := 0
 	for _, forecast := range forecastData.List {
 		t := time.Unix(forecast.Dt, 0).UTC()
-		if t.Hour() == 12 { // 12:00 PM forecast
-			message += fmt.Sprintf("Date: %s, Temp: %s, Weather: %s\n", t.Format("2006-01-02"), convertKelvinToTemperature(forecast.Main.Temp), forecast.Weather[0].Main)
+		dateStr := t.Format("2006-01-02")
+		if t.After(todayMidnight) {
+			//temp := forecast.Main.Temp
+			if daysPrinted == 0 || t.Format("2006-01-02") != dayDates[daysPrinted-1] {
+				// New day, add new entry to store max temperature and weather
+				dayDates = append(dayDates, dateStr)
+				dayMaxTemps = append(dayMaxTemps, forecast.Main.Temp)
+				dayWeather = append(dayWeather, forecast.Weather[0].Main)
+				daysPrinted++
+			} else {
+				// Update the max temperature for the same day
+				if forecast.Main.Temp > dayMaxTemps[daysPrinted-1] {
+					dayMaxTemps[daysPrinted-1] = forecast.Main.Temp
+					dayWeather[daysPrinted-1] = forecast.Weather[0].Main
+				}
+			}
 		}
 	}
+
+	daysPrinted = 1
+	for daysPrinted <= 4 {
+		message += fmt.Sprintf("Date: %s, Temp: %s, Weather: %s\n",
+			dayDates[daysPrinted], convertKelvinToTemperature(dayMaxTemps[daysPrinted]),
+			dayWeather[daysPrinted])
+		daysPrinted++
+	}
+
 	return message, nil
 }
 
@@ -221,6 +254,5 @@ func querycity(cityInput string) string {
 	if err != nil {
 		return ""
 	}
-
 	return currentWeather + forecast
 }

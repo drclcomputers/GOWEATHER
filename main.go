@@ -59,14 +59,12 @@ func emojiCond(cond string) string {
 }
 
 func dayofweek(data string) string {
-	parsdat1, err := time.Parse("2006-01-02", data)
-	parsdat1 = parsdat1.AddDate(0, 0, -1)
+	parsedDat, err := time.Parse("2006-01-02", data)
 	if err != nil {
 		fmt.Println("Error parsing date:", err)
 		return "N/A"
 	}
-
-	return parsdat1.Weekday().String()
+	return parsedDat.Weekday().String()
 }
 
 func createhtml(message string) string {
@@ -82,10 +80,10 @@ func createhtml(message string) string {
 	direc := extractValue(message, `From: (\w+)`)
 	vis := extractValue(message, `Visibility: ([\d.]+) km`)
 
-	dat1, temp1, cond1 := forecastExtract(message, 1)
-	dat2, temp2, cond2 := forecastExtract(message, 2)
-	dat3, temp3, cond3 := forecastExtract(message, 3)
-	dat4, temp4, cond4 := forecastExtract(message, 4)
+	dat1, temp1, cond1 := forecastExtract(message, 0)
+	dat2, temp2, cond2 := forecastExtract(message, 1)
+	dat3, temp3, cond3 := forecastExtract(message, 2)
+	dat4, temp4, cond4 := forecastExtract(message, 3)
 
 	cond = emojiCond(cond)
 	cond1 = emojiCond(cond1)
@@ -98,7 +96,7 @@ func createhtml(message string) string {
 		return "Error 404! Can't read file!"
 	}
 
-	dat1 = "Tomorrow"
+	dat1 = dayofweek(dat1)
 	dat2 = dayofweek(dat2)
 	dat3 = dayofweek(dat3)
 	dat4 = dayofweek(dat4)
