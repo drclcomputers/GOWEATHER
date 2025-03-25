@@ -71,6 +71,13 @@ GoWeather is a sleek and intuitive weather website that provides real-time weath
    npm run dist
    ```
 
+!!! On Fedora, from what I've tested, this method works. However, in Debian-based or Ununtu-like distros you have to run the commands below to give some permisions.
+   ```bash
+   sudo chown root:root node_modules/electron/dist/chrome-sandbox
+   sudo chmod 4755 node_modules/electron/dist/chrome-sandbox
+   ```
+!!! I am still unable to figure out why the Appimage won't work. Until then, please use **"npm start"** in the main folder or additionally go to **"dist/linux-unpacked*"**and run **"./goweather"**. 
+
 ---
 
 ## 📜 **License**  
