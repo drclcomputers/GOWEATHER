@@ -76,9 +76,8 @@ function startGoServer() {
   });
 }
 
-const fs = require('fs');
-
 if (process.platform === 'linux') {
+  const fs = require('fs');
   const electronPath = path.join(__dirname, 'node_modules', 'electron', 'dist', 'chrome-sandbox');
   try {
     fs.chmodSync(electronPath, 0o4755); // Set correct permissions (rwsr-xr-x)
