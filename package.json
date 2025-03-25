@@ -36,12 +36,12 @@
     "extraResources": [
       {
         "from": "server.exe",
-        "to": "../resources/server.exe",
+        "to": "../server.exe",
         "filter": ["win32"]
       }, 
       {
         "from": "server",
-        "to": "../resources/server",
+        "to": "../server",
         "filter": ["linux"]
       }, 
       {
