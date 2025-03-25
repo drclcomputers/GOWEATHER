@@ -56,11 +56,15 @@ GoWeather is a sleek and intuitive weather website that provides real-time weath
    npm install
    ```
 4️⃣ Build the Server executable:
-5️⃣ Test the App:
    ```bash
    go build -o server
    ```
    ‼️ Note: For Windows, write **"server.exe"**. Otherwise leave it as is.
+   
+5️⃣ Test the App:
+   ```bash
+   npm start
+   ```
    
 6️⃣ Build an executable:
    ```bash
