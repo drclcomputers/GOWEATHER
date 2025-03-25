@@ -76,10 +76,6 @@ function startGoServer() {
   });
 }
 
-if (process.platform === 'linux') {
-  app.commandLine.appendSwitch('no-sandbox');
-}
-
 app.whenReady().then(() => {
   console.log('App is ready.');
   startGoServer();
