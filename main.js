@@ -94,3 +94,10 @@ app.on('activate', () => {
     createWindow();
   }
 });
+
+app.on("before-quit", () => {
+  if (goServer) {
+    console.log("Stopping Go server...");
+    goServer.kill("SIGTERM"); // Sends a termination signal to the process
+  }
+});
