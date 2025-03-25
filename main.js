@@ -3,6 +3,7 @@ const path = require('path');
 const { spawn } = require('child_process');
 
 let win;
+let goServer; // Store the Go server process
 
 function createWindow() {
   try {
@@ -34,20 +35,20 @@ function startGoServer() {
   let goServerPath;
   const appPath = app.getAppPath(); // Get the path to the app's root directory
 
-  if (app.isPackaged) { //packed
+  if (app.isPackaged) { // If packaged
     if (process.platform === 'win32') { 
-      goServerPath = path.join(appPath, '../../server.exe'); // Use Windows executable
+      goServerPath = path.join(appPath, '../../server.exe'); // Windows executable
     } else if (process.platform === 'linux' || process.platform === 'darwin') {
-      goServerPath = path.join(appPath, '../../server'); // Use Linux/macOS executable
+      goServerPath = path.join(appPath, '../../server'); // Linux/macOS executable
     } else {
       console.error('Unsupported platform:', process.platform);
       return;
     }
   } else { 
     if (process.platform === 'win32') {
-      goServerPath = path.join(appPath, 'server.exe'); // Use Windows executable
+      goServerPath = path.join(appPath, 'server.exe'); // Windows executable
     } else if (process.platform === 'linux' || process.platform === 'darwin') {
-      goServerPath = path.join(appPath, 'server'); // Use Linux/macOS executable
+      goServerPath = path.join(appPath, 'server'); // Linux/macOS executable
     } else {
       console.error('Unsupported platform:', process.platform);
       return;
@@ -56,7 +57,7 @@ function startGoServer() {
 
   console.log('Starting Go server from:', goServerPath);
 
-  const goServer = spawn(goServerPath);
+  goServer = spawn(goServerPath); // Store the process
 
   goServer.stdout.on('data', (data) => {
     console.log(`Go server: ${data}`);
@@ -98,6 +99,6 @@ app.on('activate', () => {
 app.on("before-quit", () => {
   if (goServer) {
     console.log("Stopping Go server...");
-    goServer.kill("SIGTERM"); // Sends a termination signal to the process
+    goServer.kill("SIGTERM"); // Send termination signal
   }
 });
