@@ -71,7 +71,7 @@ GoWeather is a sleek and intuitive weather website that provides real-time weath
    npm run dist
    ```
 
-‼️‼️‼️ Due to the architescture of the appimage format, you probably won't be able to run this app. Instead, you should download the **linux version** from the latest release, run 
+‼️‼️‼️ Due to the architecture of the appimage format, you probably won't be able to run this app. Instead, you should download the **linux version** from the latest release, run 
    ```bash
    sudo chmod +x install.sh
    ```
