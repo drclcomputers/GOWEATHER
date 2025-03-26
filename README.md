@@ -31,7 +31,7 @@ GoWeather is a sleek and intuitive weather website that provides real-time weath
 
 2️⃣ Extract the content.
 
-3️⃣ In the dearchived folder, run the server executable ("server.exe" for Windows, "server" for other OSes).
+3️⃣ In the extracted folder, run the server executable ("server.exe" for Windows, "server" for other OSes).
 
 ‼️ Note: For Linux, you'll have to run 
    ```bash
@@ -39,7 +39,7 @@ GoWeather is a sleek and intuitive weather website that provides real-time weath
    ```
 to make the server an executable.
     
-4️⃣ Navigate to **"localhost:8090"** in your Browser.
+4️⃣ Open 'localhost:8090' in your browser.
 <br><br><br>
 **⭐ Run it as a Desktop WebApp**
 
@@ -47,7 +47,7 @@ to make the server an executable.
 
 2️⃣ Extract the content.
 
-‼️ Due to some problems with permissions on Linux, you should run
+‼️ Due to permission issues on Linux, run
    ```bash
    sudo chmod +x install.sh
    ```
@@ -61,7 +61,7 @@ to install the app.
 <br><br><br>
 **⭐ Build it yourself**
 
-**‼️ Only for professionals**
+**‼️ For advanced users only**
 
 1️⃣ Use git clone to clone the repo.
 
@@ -88,12 +88,20 @@ to build the app.
    sudo chown root:root ./chrome-sandbox
    sudo chmod 4755 chrome-sandbox
    ```
-to chrome-sandbox before, to avoid further problems. Even after doing this, you still won't be able to install the app via the newly created AppImage due to the format's flawed design. I recommend using the first method instead. Build it at your own sanity's risk.
+to chrome-sandbox before, to avoid further problems. Even after doing this, you still won't be able to install the app via the newly created AppImage due to the format's flawed design. I recommend using the first method instead. Building it may be challenging—proceed at your own risk.
 
 ---
 
 ## 📜 **License**  
 This project is licensed under the **MIT License**.  
+
+---
+
+## 💻 **Live Demo**
+
+Navigate to **https://goweather-r7up.onrender.com/** to have a quick look at the app.
+
+‼️ Due to the low performance of the servers, at times, you may need to wait up to a minute. I'm deeply sorry for this inconvenience. 
 
 ---
 
