@@ -19,7 +19,7 @@ GoWeather is a sleek and intuitive weather website that provides real-time weath
 
 ---
 
-## 📋 **Requirements**
+## 📋 **Requirements (only for building it yourself)**
 ☑️ **NodeJS >= 18.17.1**<br>
 ☑️ **GO (golang) >= 1.22**<br>
 ☑️ **Electron >= 35.0.3**
@@ -27,59 +27,68 @@ GoWeather is a sleek and intuitive weather website that provides real-time weath
 ## 📦 **Installation & Usage**  
 **⭐ Run the WebServer and access it via the Web Browser**
 
-1️⃣ Clone the repository:  
-   ```bash
-   git clone https://github.com/drclcomputers/GOWEATHER
-   ```  
-2️⃣ Navigate to the project folder:  
-   ```bash
-   cd GOWEATHER
-   ```
-3️⃣ Build the Server executable
-   ```bash
-   go build
-   ```
-4️⃣ Run the server executable and navigate to **"localhost:8090"** in your Browser.
+1️⃣ Download the release for your operating system.
 
+2️⃣ Extract the content.
+
+3️⃣ In the dearchived folder, run the server executable ("server.exe" for Windows, "server" for other OSes).
+
+‼️ Note: For Linux, you'll have to run 
+   ```bash
+   sudo chmod +x server
+   ```
+to make the server an executable.
+    
+4️⃣ Navigate to **"localhost:8090"** in your Browser.
+<br><br><br>
 **⭐ Run it as a Desktop WebApp**
 
-1️⃣ Clone the repository:  
-   ```bash
-   git clone https://github.com/drclcomputers/GOWEATHER
-   ```  
-2️⃣ Navigate to the project folder:  
-   ```bash
-   cd GOWEATHER
-   ```
-3️⃣ Install the dependencies with npm:
-   ```bash
-   npm install
-   ```
-4️⃣ Build the Server executable:
-   ```bash
-   go build -o server
-   ```
-   ‼️ Note: For Windows, write **"server.exe"**. Otherwise leave it as is.
-   
-5️⃣ Test the App:
-   ```bash
-   npm start
-   ```
-   
-6️⃣ Build an executable:
-   ```bash
-   npm run dist
-   ```
+1️⃣ Download the release for your operating system.
 
-‼️‼️‼️ Due to the architecture of the appimage format, you probably won't be able to run this app. Instead, you should download the **linux version** from the latest release, run 
+2️⃣ Extract the content.
+
+‼️ Due to some problems with permissions on Linux, you should run
    ```bash
    sudo chmod +x install.sh
    ```
-to give permissions to the install script and then run
+before, to give permissions to the install script and then run
    ```bash
-   ./goweather
+   ./install.sh
    ```
-to start the app.
+to install the app.
+
+3️⃣ In the dearchived folder, run the "goweather" executable ("goweather.exe" for Windows, "goweather" for other OSes).
+<br><br><br>
+**⭐ Build it yourself**
+
+**‼️ Only for professionals**
+
+1️⃣ Use git clone to clone the repo.
+
+2️⃣ In the repo's folder, run
+   ```bash
+   npm install
+   ```
+3️⃣ Then compile the server with
+   ```bash
+   go build -o server
+   ```
+3️⃣ After this, use 
+   ```bash
+   npm start
+   ```
+or
+   ```bash
+   npm run dist
+   ```
+to build the app.
+
+‼️ On Linux, you should give the permissions 
+   ```bash
+   sudo chown root:root ./chrome-sandbox
+   sudo chmod 4755 chrome-sandbox
+   ```
+to chrome-sandbox before, to avoid further problems. Even after doing this, you still won't be able to install the app via the newly created AppImage due to the format's flawed design. I recommend using the first method instead. Build it at your own sanity's risk.
 
 ---
 
